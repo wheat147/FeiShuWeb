@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>考勤信息</title>
+    <link rel="stylesheet" th:href="@{/css/index_work.css}">
+
+</head>
+<body>
+<div style="text-align: center;">
+    <form method="get" th:action="@{/}" style="display: inline-block;" >
+        <input type="date" id="startDate" name="startDate" th:value="${session.startDate}">
+        ——<input type="date" id="endDate" name="endDate" th:value="${session.endDate}">
+        <input style="margin-left: 5px;" type="submit" value="查询" name="submit">
+    </form>
+    <input type="hidden" id="msg" th:value="${msg}">
+
+</div>
+<div>
+    <img th:href="@{/css/img/a.png}">
+</div>
+<div id="app">
+    <table>
+        <tr>
+            <th colspan="8">员工考勤信息</th>
+        </tr>
+        <tr>
+            <th>姓名</th>
+            <th>应出勤天数</th>
+            <th >实际出勤天数
+                <a th:href="@{/sort/desc/days_of_attendance_actually/1}" style="margin-left: 10px; font-size: 20px;">↑</a>
+                <a th:href="@{/sort/asc/days_of_attendance_actually/1}" style="margin-left: 10px; font-size: 20px;">↓</a>
+            </th>
+            <th>应出勤时长（小时）</th>
+            <th>实际出勤时长（小时）
+                <a th:href="@{/sort/desc/time_of_attendance_actually/1}" style="margin-left: 10px; font-size: 20px;">↑</a>
+                <a th:href="@{/sort/asc/time_of_attendance_actually/1}" style="margin-left: 10px; font-size: 20px;">↓</a>
+            </th>
+            <th>迟到次数
+                <a th:href="@{/sort/desc/num_of_late/1}" style="margin-left: 10px; font-size: 20px;">↑</a>
+                <a th:href="@{/sort/asc/num_of_late/1}" style="margin-left: 10px; font-size: 20px;">↓</a>
+            </th>
+            <th>早退次数
+                <a th:href="@{/sort/desc/num_of_early_dismissals/1}" style="margin-left: 10px; font-size: 20px;">↑</a>
+                <a th:href="@{/sort/asc/num_of_early_dismissals/1}" style="margin-left: 10px; font-size: 20px;">↓</a>
+            </th>
+            <th>缺勤天数
+                <a th:href="@{/sort/desc/days_of_absence/1}" style="margin-left: 10px; font-size: 20px;">↑</a>
+                <a th:href="@{/sort/asc/days_of_absence/1}" style="margin-left: 10px; font-size: 20px;">↓</a>
+            </th>
+        </tr>
+        <tr th:each="user,status : ${pageInfo.list}">
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.daysOfAttendanceRequired}"></td>
+            <td th:text="${user.daysOfAttendanceActually}"></td>
+            <td th:text="${user.timeOfAttendanceRequired}"></td>
+            <td th:text="${user.timeOfAttendanceActually}"></td>
+            <td th:text="${user.numOfLate}"></td>
+            <td th:text="${user.numOfEarlyDismissals}"></td>
+            <td th:text="${user.daysOfAbsence}"></td>
+        </tr>
+    </table>
+<!--    style="text-align: center; padding-right: 20px;"-->
+    <div style="text-align:center;">
+        <!--    th:if 条件成立则显示该标签，否则不显示-->
+        <!--    判断条件如下： -->
+        <!--    若 当前页 有上一页，则显示 首页和上一页 的链接-->
+        <!--    若 当前页 有下一页，则显示 尾页和下一页 的链接-->
+        <a th:if="${pageInfo.hasPreviousPage} == true" th:href="@{/data/page/1}">首页</a>
+        <a th:if="${pageInfo.hasPreviousPage} == true" th:href="@{|/data/page/${pageInfo.prePage}|}">上一页</a>
+
+        <!--    遍历pageInfo中的导航页面列表-->
+        <!--    对页码进行判断： -->
+        <!--    若为 当前访问页的页码 则使其加上 中括号和红色字体 样式-->
+        <!--    否则按普通样式输出-->
+        <span th:each=" pageNum : ${pageInfo.navigatepageNums}">
+            <a th:if="${pageNum} == ${pageInfo.pageNum}" style="margin-right: 10px; font-size: 17px; color: red;" th:href="@{|/data/page/${pageNum}|}" th:text="|[${pageNum}]|"></a>
+            <a th:if="${pageNum} != ${pageInfo.pageNum}" style="margin-right: 10px; font-size: 17px;" th:href="@{|/data/page/${pageNum}|}" th:text="${pageNum}"></a>
+        </span>
+
+        <a th:if="${pageInfo.hasNextPage} == true" th:href="@{|/data/page/${pageInfo.nextPage}|}">下一页</a>
+        <a th:if="${pageInfo.hasNextPage} == true" th:href="@{|/data/page/${pageInfo.pages}|}">尾页</a>
+    </div>
+    <form method="post">
+        <input type="hidden" name="_method" value="delete">
+    </form>
+</div>
+<script type="text/javascript" th:inline="javascript">
+
+    // function checkDate() {
+    //     var msg =  $("#msg").val();
+    //     if(msg){
+    //         $.alert(msg );
+    //     }
+    // };
+</script>
+</body>
+</html>

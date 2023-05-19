@@ -1,0 +1,18 @@
+feiShuApp:
+  APP_ID: cli_a32144ad503f500b
+  APP_SECRET: wcBVIGuVDSnzqgGDILZbqeTKKTNUgrkR
+
+spring:
+  #配置数据源
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/feishu_user?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+      username: root  #debian-sys-maint
+      password: 123456  #N4PqQfcwkCGXhiTV
+
+# page helper 配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
